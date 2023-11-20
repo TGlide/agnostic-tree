@@ -1,5 +1,5 @@
 ---
-
+import { TreeReact } from "../components/Tree.react.js";
 ---
 
 <html lang="en">
@@ -11,10 +11,31 @@
     <title>Agnostic tree</title>
   </head>
   <body class="text-gray-0 bg-gray-12 p-16">
-    <h1 class="text-4xl font-bold">Astro</h1>
+    <h1 class="text-4xl font-bold">Agnostic tree</h1>
+    <div class="grid mbs-32">
+      {
+        [...new Array(10)].map((_) => (
+          <div class="border bc-gray-10 rounded-md p-16 bg-gray-11">
+            <h2 class="flex items-center gap-8">
+              <div class="i-logos-react text-2xl" aria-hidden />
+              <span class="text-2xl font-medium">React</span>
+            </h2>
+            <div class="w-full aspect-square bg-gray-12 rounded-md mbs-16 grid place-items-center">
+              <TreeReact />
+            </div>
+          </div>
+        ))
+      }
+    </div>
   </body>
 </html>
 
 <style>
   @import "../styles/color.css";
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 0.5rem;
+  }
 </style>

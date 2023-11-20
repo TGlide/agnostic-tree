@@ -1,6 +1,8 @@
 // uno.config.ts
 import { defineConfig, type DynamicMatcher, type Rule } from "unocss";
 import { colors } from "./src/styles/color";
+import presetIcons from "@unocss/preset-icons";
+import presetUno from "@unocss/preset-uno";
 
 function pxToRem(num: number) {
   return `${num / 16}rem`;
@@ -70,4 +72,5 @@ const spacingRules: Rule[] = [
 
 export default defineConfig({
   rules: [...colorRules, ...spacingRules],
+  presets: [presetUno(), presetIcons()],
 });
