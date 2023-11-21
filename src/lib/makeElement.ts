@@ -56,7 +56,7 @@ export function makeElement<
 
   return {
     attributes,
-    listeners,
+    listeners: listeners as Listeners,
   };
 }
 

@@ -5,9 +5,7 @@ export function createTree() {
   const value = atom(0);
 
   const element = makeElement({
-    dependencies: {
-      value,
-    },
+    dependencies: { value },
     getAttributes({ $value }) {
       return {
         "data-value": String($value),
