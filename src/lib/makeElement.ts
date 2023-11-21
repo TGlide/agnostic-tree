@@ -1,10 +1,15 @@
 import { keys } from "@/helpers/object";
 import { computed, type Atom } from "nanostores";
 import type { AtomValue, AtomValueMap, GeneralListenerMap } from "./types";
+import { computedObj } from "./helpers/computedObj";
+
+type BaseAttributes =
+  | Record<string, unknown>
+  | ((...args: any[]) => Record<string, unknown>);
 
 type MakeElementArgs<
   Deps extends Record<string, Atom>,
-  Attributes extends Record<string, string>,
+  Attributes extends BaseAttributes,
   Listeners extends GeneralListenerMap
 > = {
   dependencies: Deps;
@@ -14,24 +19,14 @@ type MakeElementArgs<
 
 export function makeElement<
   Deps extends Record<string, Atom>,
-  Attributes extends Record<string, string>,
+  Attributes extends BaseAttributes,
   Listeners extends GeneralListenerMap
 >({
   dependencies,
   getAttributes,
   listeners,
 }: MakeElementArgs<Deps, Attributes, Listeners>) {
-  const attributes = computed(Object.values(dependencies), (...values) => {
-    const valueMap = {} as AtomValueMap<Deps>;
-    values.forEach((value: any, index: number) => {
-      const key = `$${
-        keys(dependencies)[index] as string
-      }` as keyof AtomValueMap<Deps>;
-      valueMap[key] = value;
-    });
-
-    return getAttributes(valueMap);
-  });
+  const attributes = computedObj(dependencies, getAttributes);
 
   return {
     attributes,
@@ -41,6 +36,6 @@ export function makeElement<
 
 export type MadeElement<
   Deps extends Record<string, Atom> = Record<string, Atom>,
-  Attributes extends Record<string, string> = Record<string, string>,
+  Attributes extends BaseAttributes = BaseAttributes,
   Listeners extends GeneralListenerMap = GeneralListenerMap
 > = ReturnType<typeof makeElement<Deps, Attributes, Listeners>>;

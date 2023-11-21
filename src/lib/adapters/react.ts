@@ -98,6 +98,7 @@ export function useComponent<C extends MadeComponent>(component: C) {
   }, []);
 
   return {
+    ...component,
     elements,
   };
 }
