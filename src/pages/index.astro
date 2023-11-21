@@ -1,5 +1,5 @@
 ---
-import { TreeReact } from "../components/Tree.react.js";
+import { TreeReact } from "@/components/Tree.react";
 ---
 
 <html lang="en">
@@ -21,7 +21,7 @@ import { TreeReact } from "../components/Tree.react.js";
               <span class="text-2xl font-medium">React</span>
             </h2>
             <div class="w-full aspect-square bg-gray-12 rounded-md mbs-16 grid place-items-center">
-              <TreeReact />
+              <TreeReact client:load />
             </div>
           </div>
         ))
