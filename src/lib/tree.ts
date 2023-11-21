@@ -1,7 +1,8 @@
 import { atom } from "nanostores";
 import { makeElement } from "./makeElement";
+import { makeComponent } from "./makeComponent";
 
-export function createTree() {
+export const createTree = makeComponent(() => {
   const value = atom(0);
 
   const element = makeElement({
@@ -19,6 +20,8 @@ export function createTree() {
   });
 
   return {
-    element,
+    elements: {
+      element,
+    },
   };
-}
+});

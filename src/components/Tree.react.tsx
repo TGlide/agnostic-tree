@@ -1,9 +1,10 @@
-import { adaptElement } from "@/lib/adapters/react";
+import { adaptElement, useComponent } from "@/lib/adapters/react";
 import { createTree } from "@/lib/tree";
 
 export const TreeReact = () => {
-  const { element } = createTree();
-  const adapted = adaptElement(element);
+  const {
+    elements: { element },
+  } = useComponent(createTree());
 
-  return <div {...adapted.listeners}>Tree</div>;
+  return <div {...element}>Tree</div>;
 };
