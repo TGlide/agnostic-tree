@@ -3,8 +3,6 @@
 
   export type TreeItem = {
     title: string;
-    icon: Icon;
-
     children?: TreeItem[];
   };
 
@@ -14,6 +12,7 @@
     folderOpen: "i-solar-folder-open-bold-duotone",
     js: "i-logos-javascript",
     highlight: "i-solar-arrow-left-bold",
+    unknown: "i-solar-question-circle-bold",
   };
 </script>
 
@@ -27,9 +26,19 @@
     elements: { item, group },
     helpers: { isExpanded, isSelected },
   } = getCtx();
+
+  function getIcon(item: TreeItem, id: string) {
+    if (item.children) {
+      return $isExpanded(id) ? icons.folderOpen : icons.folder;
+    }
+
+    const fileExt = item.title.split(".").pop();
+    return icons[fileExt as Icon] ?? icons.unknown;
+  }
 </script>
 
-{#each treeItems as { title, icon, children }, i}
+{#each treeItems as treeItem, i}
+  {@const { title, children } = treeItem}
   {@const itemId = `${title}-${i}`}
   {@const hasChildren = !!children?.length}
 
@@ -44,11 +53,7 @@
       use:item.action
     >
       <!-- Add icon. -->
-      {#if icon === "folder" && hasChildren && $isExpanded(itemId)}
-        <div class="{icons['folderOpen']} text-lg" />
-      {:else}
-        <div class="{icons[icon]} text-lg" />
-      {/if}
+      <div class="{getIcon(treeItem, itemId)} text-lg" />
 
       <span class="select-none">{title}</span>
 

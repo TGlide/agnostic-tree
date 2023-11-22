@@ -2,10 +2,9 @@ import { atom } from "nanostores";
 import { last } from "./helpers/array";
 import { computedObj } from "./helpers/computedObj";
 import { getElByDataAttr, isHidden } from "./helpers/dom";
-import { generateIds } from "./helpers/id";
+import { generateId, generateIds } from "./helpers/id";
 import { isHtmlElement, isLetter } from "./helpers/is";
 import { kbd } from "./helpers/keyboard";
-import { styleToString } from "./helpers/style";
 import { makeComponent, type MadeComponent } from "./makeComponent";
 import { makeElement } from "./makeElement";
 
@@ -47,14 +46,16 @@ export const createTree = makeComponent(() => {
     return (itemId: string) => $expanded.includes(itemId);
   });
 
-  const metaIds = generateIds(["tree"]);
+  const metaIds = {
+    root: atom(generateId()),
+  };
 
   const rootTree = makeElement({
-    dependencies: {},
-    getAttributes() {
+    dependencies: { id: metaIds.root },
+    getAttributes({ $id }) {
       return {
         role: "tree",
-        "data-id": metaIds.tree,
+        "data-id": $id,
       } as const;
     },
   });
@@ -88,6 +89,7 @@ export const createTree = makeComponent(() => {
         const { key } = e;
 
         const keyIsLetter = isLetter(key);
+        console.log(keyIsLetter, key);
 
         const keys = [
           kbd.ARROW_DOWN,
@@ -105,7 +107,8 @@ export const createTree = makeComponent(() => {
           return;
         }
 
-        const rootEl = getElByDataAttr("id", metaIds.tree);
+        const rootEl = getElByDataAttr("id", metaIds.root.get());
+        console.log(rootEl, metaIds.root.get());
         if (!rootEl || node.getAttribute("role") !== "treeitem") {
           return;
         }
@@ -240,9 +243,6 @@ export const createTree = makeComponent(() => {
         role: "group",
         "data-group-id": opts.id,
         hidden: !$expanded.includes(opts.id) ? true : undefined,
-        style: styleToString({
-          display: !$expanded.includes(opts.id) ? "none" : undefined,
-        }),
       });
     },
   });
@@ -261,7 +261,7 @@ export const createTree = makeComponent(() => {
 
   function getItems(): HTMLElement[] {
     let items = [] as HTMLElement[];
-    const rootEl = getElByDataAttr("id", metaIds.tree);
+    const rootEl = getElByDataAttr("id", metaIds.root.get());
     if (!rootEl) return items;
 
     // Select all 'treeitem' li elements within our root element.
