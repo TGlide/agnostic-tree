@@ -10,10 +10,10 @@
 
   export const icons = {
     svelte: "i-logos-svelte-icon",
-    folder: "i-logos-svelte",
-    folderOpen: "i-logos-svelte",
-    js: "i-logos-svelte",
-    highlight: "i-logos-svelte",
+    folder: "i-solar-folder-2-bold-duotone",
+    folderOpen: "i-solar-folder-open-bold-duotone",
+    js: "i-logos-javascript",
+    highlight: "i-solar-arrow-left-bold",
   };
 </script>
 
@@ -35,7 +35,8 @@
 
   <li class={level !== 1 ? "pl-4" : ""}>
     <button
-      class="flex items-center gap-1 rounded-md p-1 focus:bg-magnum-200"
+      class="flex items-center gap-4 rounded-md p-4 relative
+			focus:bg-neutral-700 focus:ring focus:ring-neutral-100 focus:outline-none"
       {...$item({
         id: itemId,
         hasChildren,
@@ -44,16 +45,20 @@
     >
       <!-- Add icon. -->
       {#if icon === "folder" && hasChildren && $isExpanded(itemId)}
-        <div class="{icons['folderOpen']} h-4 w-4" />
+        <div class="{icons['folderOpen']} text-lg" />
       {:else}
-        <div class="{icons[icon]} h-4 w-4" />
+        <div class="{icons[icon]} text-lg" />
       {/if}
 
       <span class="select-none">{title}</span>
 
       <!-- Selected icon. -->
       {#if $isSelected(itemId)}
-        <div class="{icons['highlight']} h-4 w-4" />
+        <div
+          class="{icons[
+            'highlight'
+          ]} text-lg absolute right-0 translate-x-[calc(100%_+_0.25rem)]"
+        />
       {/if}
     </button>
 
@@ -64,10 +69,3 @@
     {/if}
   </li>
 {/each}
-
-<style>
-  /* Remove docs' focus box-shadow styling. */
-  li:focus {
-    box-shadow: none !important;
-  }
-</style>

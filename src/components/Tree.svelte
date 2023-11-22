@@ -80,15 +80,8 @@
   ];
 </script>
 
-<div
-  class="flex h-[18.75rem] w-[18.75rem] flex-col rounded-xl bg-white text-neutral-900 md:h-[350px]"
->
-  <div class="flex flex-col gap-1 px-4 pt-4">
-    <h3 class="text-lg font-bold">Project Structure</h3>
-    <hr />
-  </div>
-
-  <ul class="overflow-auto px-4 pb-4 pt-2" {...$tree}>
+<div class="grid w-full h-full place-items-center">
+  <ul class="overflow-auto py-4 px-16" {...$tree}>
     <TreeInner {treeItems} />
   </ul>
 </div>
