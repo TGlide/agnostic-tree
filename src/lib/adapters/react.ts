@@ -1,6 +1,6 @@
 import { entries, keys } from "@/helpers/object";
-import { useEffect, useState, type DOMAttributes } from "react";
-import type { MadeComponent } from "../makeComponent";
+import { useEffect, useState, type DOMAttributes, useMemo } from "react";
+import type { ComponentCallback, MadeComponent } from "../makeComponent";
 import type { MadeElement } from "../makeElement";
 import type { AtomValue, Expand, GeneralEventListener } from "../types";
 import { atom } from "nanostores";
@@ -59,7 +59,10 @@ export function adaptElement<E extends MadeElement>(element: E) {
   };
 }
 
-export function useComponent<C extends MadeComponent>(component: C) {
+export function useComponent<Cb extends ComponentCallback>(componentCb: Cb) {
+  type C = ReturnType<Cb>;
+
+  const component = useMemo(() => componentCb(), []);
   const adaptedElements = Object.fromEntries(
     entries(component.elements).map(([key, value]) => {
       return [key, adaptElement(value)];
@@ -128,6 +131,6 @@ export function useComponent<C extends MadeComponent>(component: C) {
   };
 }
 
-export type ReactComponent<C extends MadeComponent> = Expand<
+export type ReactComponent<C extends ComponentCallback> = Expand<
   ReturnType<typeof useComponent<C>>
 >;

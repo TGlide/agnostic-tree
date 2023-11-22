@@ -46,16 +46,12 @@ export const createTree = makeComponent(() => {
     return (itemId: string) => $expanded.includes(itemId);
   });
 
-  const metaIds = {
-    root: atom(generateId()),
-  };
-
   const rootTree = makeElement({
-    dependencies: { id: metaIds.root },
-    getAttributes({ $id }) {
+    dependencies: {},
+    getAttributes() {
       return {
         role: "tree",
-        "data-id": $id,
+        "data-tree-root": "",
       } as const;
     },
   });
@@ -89,7 +85,6 @@ export const createTree = makeComponent(() => {
         const { key } = e;
 
         const keyIsLetter = isLetter(key);
-        console.log(keyIsLetter, key);
 
         const keys = [
           kbd.ARROW_DOWN,
@@ -107,13 +102,16 @@ export const createTree = makeComponent(() => {
           return;
         }
 
-        const rootEl = getElByDataAttr("id", metaIds.root.get());
-        console.log(rootEl, metaIds.root.get());
-        if (!rootEl || node.getAttribute("role") !== "treeitem") {
+        const rootEl = node.closest('[data-tree-root=""]');
+
+        if (
+          !isHtmlElement(rootEl) ||
+          node.getAttribute("role") !== "treeitem"
+        ) {
           return;
         }
 
-        const items = getItems();
+        const items = getItems(rootEl);
         const nodeIdx = items.findIndex((item) => item === node);
 
         if (key !== kbd.ENTER && key !== kbd.SPACE) {
@@ -259,10 +257,8 @@ export const createTree = makeComponent(() => {
     selectedItem.set(el);
   }
 
-  function getItems(): HTMLElement[] {
+  function getItems(rootEl: HTMLElement): HTMLElement[] {
     let items = [] as HTMLElement[];
-    const rootEl = getElByDataAttr("id", metaIds.root.get());
-    if (!rootEl) return items;
 
     // Select all 'treeitem' li elements within our root element.
     items = Array.from(rootEl.querySelectorAll('[role="treeitem"]')).filter(

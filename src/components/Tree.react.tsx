@@ -22,7 +22,7 @@ const icons = {
   unknown: "i-solar-question-circle-bold",
 };
 
-type TreeComponent = ReactComponent<Tree>;
+type TreeComponent = ReactComponent<typeof createTree>;
 
 const Context = createContext<TreeComponent | null>(null);
 
@@ -47,7 +47,6 @@ const TreeInner = ({ level = 1, treeItems }: TreeInnerProps) => {
     elements: { item, group },
     helpers: { isExpanded, isSelected },
   } = ctx;
-  console.log({ ctx, item, group });
 
   function getIcon(item: TreeItem, id: string) {
     if (item.children) {
@@ -99,7 +98,7 @@ const TreeInner = ({ level = 1, treeItems }: TreeInnerProps) => {
 };
 
 export const TreeReact = () => {
-  const cmp = useComponent(createTree());
+  const cmp = useComponent(createTree);
 
   const treeItems: TreeItem[] = [
     { title: "index.js" },
@@ -143,8 +142,6 @@ export const TreeReact = () => {
       ],
     },
   ];
-
-  console.log({ cmp });
 
   return (
     <Context.Provider value={cmp}>

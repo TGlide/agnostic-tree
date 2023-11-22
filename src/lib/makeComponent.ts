@@ -1,7 +1,7 @@
 import type { ReadableAtom } from "nanostores";
 import type { MadeElement } from "./makeElement";
 
-type ComponentCallback<
+export type ComponentCallback<
   Elements extends Record<string, MadeElement> = any,
   States extends Record<string, ReadableAtom> = any,
   Helpers extends Record<string, any> = any
