@@ -6,7 +6,7 @@ import { generateIds } from "./helpers/id";
 import { isHtmlElement, isLetter } from "./helpers/is";
 import { kbd } from "./helpers/keyboard";
 import { styleToString } from "./helpers/style";
-import { makeComponent } from "./makeComponent";
+import { makeComponent, type MadeComponent } from "./makeComponent";
 import { makeElement } from "./makeElement";
 
 const ATTRS = {
@@ -323,3 +323,5 @@ export const createTree = makeComponent(() => {
     },
   };
 });
+
+export type Tree = MadeComponent<typeof createTree>;

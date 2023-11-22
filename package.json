@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "agnostic-tree",
   "type": "module",
   "version": "0.0.1",
   "scripts": {
@@ -12,7 +12,7 @@
   "dependencies": {
     "@astrojs/react": "^3.0.5",
     "@astrojs/solid-js": "^3.0.2",
-    "@astrojs/svelte": "^4.0.4",
+    "@astrojs/svelte": "latest",
     "@astrojs/vue": "^3.0.4",
     "@nanostores/react": "^0.7.1",
     "@types/react": "^18.0.21",
@@ -23,7 +23,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "solid-js": "^1.4.3",
-    "svelte": "^5.0.0-next.1",
+    "svelte": "^5.0.0-next.9",
     "vue": "^3.2.30"
   },
   "devDependencies": {

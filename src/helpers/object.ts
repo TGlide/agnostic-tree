@@ -23,3 +23,16 @@ export function entries<T extends Record<string, unknown>>(
 ): [keyof T, T[keyof T]][] {
   return Object.entries(obj) as [keyof T, T[keyof T]][];
 }
+
+export function omit<Obj extends Record<string, unknown>, K extends keyof Obj>(
+  obj: Obj,
+  ...keys: K[]
+): Omit<Obj, K> {
+  const result = { ...obj };
+
+  for (const key of keys) {
+    delete result[key];
+  }
+
+  return result;
+}
