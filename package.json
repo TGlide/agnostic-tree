@@ -14,6 +14,8 @@
     "@astrojs/solid-js": "^3.0.2",
     "@astrojs/svelte": "latest",
     "@astrojs/vue": "^3.0.4",
+    "@iconify-json/file-icons": "^1.1.6",
+    "@iconify-json/mdi": "^1.1.56",
     "@iconify-json/solar": "^1.1.6",
     "@nanostores/react": "^0.7.1",
     "@types/react": "^18.0.21",

@@ -47,6 +47,8 @@ const spacingRules: Rule[] = [
   ["pks", "padding-block-start"],
   ["pbe", "padding-block-end"],
   ["pke", "padding-block-end"],
+  ["px", "padding-inline"],
+  ["py", "padding-block"],
   ["w", "width"],
   ["h", "height"],
   ["min-w", "min-width"],
@@ -73,4 +75,16 @@ const spacingRules: Rule[] = [
 export default defineConfig({
   rules: [...colorRules, ...spacingRules],
   presets: [presetUno(), presetIcons()],
+  content: {
+    pipeline: {
+      include: [
+        // the default
+        /\.(vue|svelte|[jt]sx|mdx?|astro|elm|php|phtml|html)($|\?)/,
+        // include js/ts files
+        "src/**/*.{js,ts}",
+      ],
+      // exclude files
+      // exclude: []
+    },
+  },
 });

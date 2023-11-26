@@ -6,6 +6,7 @@ import { isHtmlElement, isLetter } from "../helpers/is";
 import { kbd } from "../helpers/keyboard";
 import { makeComponent, type MadeComponent } from "../makeComponent";
 import { makeElement } from "../makeElement";
+import { generateId } from "../helpers/id";
 
 const ATTRS = {
   TABINDEX: "tabindex",
@@ -45,12 +46,15 @@ export const createTree = makeComponent(() => {
     return (itemId: string) => $expanded.includes(itemId);
   });
 
+  const rootId = generateId();
+
   const rootTree = makeElement({
     dependencies: {},
     getAttributes() {
       return {
         role: "tree",
         "data-tree-root": "",
+        "data-id": rootId,
       } as const;
     },
   });
@@ -303,6 +307,26 @@ export const createTree = makeComponent(() => {
     return el.getAttribute(ATTRS.EXPANDED) === "true";
   }
 
+  function expandAll() {
+    const rootEl = document.querySelector(`[data-id="${rootId}"]`);
+    if (!isHtmlElement(rootEl)) return;
+
+    const items = rootEl.querySelectorAll('[role="treeitem"]');
+
+    items.forEach((item) => {
+      if (!isHtmlElement(item)) return;
+
+      const { hasChildren, dataId } = getElementAttributes(item);
+      if (!hasChildren || dataId === null) return;
+
+      expanded.set([...expanded.get(), dataId]);
+    });
+  }
+
+  function collapseAll() {
+    expanded.set([]);
+  }
+
   return {
     elements: {
       tree: rootTree,
@@ -316,6 +340,8 @@ export const createTree = makeComponent(() => {
     helpers: {
       isExpanded,
       isSelected,
+      expandAll,
+      collapseAll,
     },
   };
 });

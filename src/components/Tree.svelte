@@ -11,64 +11,36 @@
 <script lang="ts">
   import { getContext, setContext } from "svelte";
 
-  import type { TreeItem } from "./TreeInner.svelte";
-  import TreeInner from "./TreeInner.svelte";
-  import { createTree, type Tree } from "@/lib/builders/tree";
+  import { data } from "@/data";
   import { withComponent, type SvelteComponent } from "@/lib/adapters/svelte";
+  import { createTree, type Tree } from "@/lib/builders/tree";
+  import TreeInner from "./TreeInner.svelte";
 
   const ctx = withComponent(createTree());
   setCtx(ctx);
 
   const {
     elements: { tree },
+    helpers: { expandAll, collapseAll },
   } = ctx;
-
-  const treeItems: TreeItem[] = [
-    { title: "index.js" },
-    {
-      title: "lib",
-      children: [
-        {
-          title: "tree",
-          children: [
-            {
-              title: "Tree.svelte",
-            },
-            {
-              title: "TreeView.svelte",
-            },
-          ],
-        },
-        {
-          title: "icons",
-          children: [{ title: "JS.svelte" }, { title: "Svelte.svelte" }],
-        },
-        {
-          title: "index.js",
-        },
-      ],
-    },
-    {
-      title: "routes",
-      children: [
-        {
-          title: "contents",
-          children: [
-            {
-              title: "+layout.svelte",
-            },
-            {
-              title: "+page.svelte",
-            },
-          ],
-        },
-      ],
-    },
-  ];
 </script>
 
-<div class="grid w-full h-full place-items-center overflow-y-auto">
-  <ul class="py-4 px-16" {...$tree}>
-    <TreeInner {treeItems} />
-  </ul>
+<div class="flex items-center gap-8">
+  <button
+    class="font-mono text-xs text-gray-8 hover:text-gray-4"
+    on:click={expandAll}
+  >
+    Expand all
+  </button>
+  <div class="w-px h-16 bg-gray-8" aria-hidden="true" />
+  <button
+    class="font-mono text-xs text-gray-8 hover:text-gray-4"
+    on:click={collapseAll}
+  >
+    Collapse all
+  </button>
 </div>
+
+<ul class="mbs-8" {...$tree}>
+  <TreeInner treeItems={data} />
+</ul>
