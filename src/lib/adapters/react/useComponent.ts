@@ -2,74 +2,60 @@ import { entries, keys } from "@/helpers/object";
 import type { MadeComponent } from "@/lib/makeComponent";
 import { useEffect, useMemo, useState } from "react";
 import type { ComponentCallback } from "../../makeComponent";
-import type { Expand } from "../../types";
-import { adaptElement, type ReactElement } from "./adaptElement";
-import { useStoreValues } from "./useStoreValues";
+import type { AtomValue, Expand } from "../../types";
 
-export function useComponentElements<C extends MadeComponent>(component: C) {
-  const adaptedElements = Object.fromEntries(
-    entries(component.elements).map(([key, value]) => {
-      return [key, adaptElement(value)];
-    })
-  ) as {
-    [K in keyof C["elements"]]: ReturnType<
-      typeof adaptElement<C["elements"][K]>
-    >;
+import { useStoreValues } from "./useStoreValues";
+import type { MadeElement } from "@/lib/makeElement";
+import { adaptListeners, type Listeners } from "./listeners";
+import type { ObjSnapshot } from "@/lib/helpers/getObjSnapshot";
+import { adaptAttributes } from "./attributes";
+
+export type ReactElement<E extends MadeElement> = AtomValue<
+  E["attributes"]
+> extends (...args: infer Params) => infer Res
+  ? (...args: Params) => Res & Listeners<E["listeners"]>
+  : AtomValue<E["attributes"]> & Listeners<E["listeners"]>;
+
+type ComponentElements<C extends MadeComponent> = {
+  [K in keyof C["elements"]]: ReactElement<C["elements"][K]>;
+};
+
+export function useComponentElements<C extends MadeComponent>(
+  component: C
+): ComponentElements<C> {
+  const elementValues = useStoreValues(component.elements) as {
+    [K in keyof C["elements"]]: {
+      attributes: AtomValue<C["elements"][K]["attributes"]>;
+      listeners?: C["elements"][K]["listeners"];
+    };
   };
 
-  const getElValue = (key: keyof C["elements"]) => {
-    const element = adaptedElements[key];
-    const { attributes, listeners } = element;
-    const $attributes = attributes.get();
+  return entries(elementValues).reduce((acc, [key, element]) => {
+    const listeners = element.listeners
+      ? adaptListeners(element.listeners)
+      : {};
 
-    if (typeof $attributes === "function") {
-      return (...args: Parameters<typeof $attributes>) => {
-        return {
-          ...$attributes(...args),
-          ...listeners,
-        };
+    if (typeof element.attributes === "function") {
+      return {
+        ...acc,
+        [key]: (...args: any[]) => {
+          const attributes = (element.attributes as any)(...args);
+          return {
+            ...adaptAttributes(attributes),
+            ...listeners,
+          };
+        },
       };
     }
-    return { ...$attributes, ...listeners };
-  };
 
-  const [elements, setElements] = useState(() => {
-    const res = {} as {
-      [K in keyof C["elements"]]: ReactElement<C["elements"][K]>;
+    return {
+      ...acc,
+      [key]: {
+        ...adaptAttributes(element.attributes as any),
+        ...listeners,
+      },
     };
-
-    keys(adaptedElements).forEach((k) => {
-      const v = getElValue(k);
-      res[k] = v;
-    });
-
-    return res;
-  });
-
-  useEffect(() => {
-    const unsubs = [] as (() => void)[];
-    keys(adaptedElements).forEach((key) => {
-      const { attributes } = adaptedElements[key];
-
-      const unsub = attributes.subscribe(() => {
-        const value = getElValue(key);
-        setElements((prev) => {
-          return {
-            ...prev,
-            [key]: value,
-          };
-        });
-      });
-
-      unsubs.push(unsub);
-    });
-
-    return () => {
-      unsubs.forEach((unsub) => unsub());
-    };
-  }, []);
-
-  return elements;
+  }, {} as ComponentElements<C>);
 }
 
 export function useComponent<Cb extends ComponentCallback>(componentCb: Cb) {

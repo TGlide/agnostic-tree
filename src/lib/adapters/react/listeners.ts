@@ -1,9 +1,7 @@
-import type { MadeElement } from "@/lib/makeElement";
+import { entries } from "@/helpers/object";
+import { toCamelCase } from "@/lib/helpers/toCamelCase";
+import type { GeneralListenerMap } from "@/lib/types";
 import type { DOMAttributes } from "react";
-
-function toCamelCase(str: string) {
-  return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-}
 
 const LISTENER_MAP = {
   click: "onClick",
@@ -24,8 +22,8 @@ export type ListenerKey<K extends string> = K extends keyof typeof LISTENER_MAP
   ? (typeof LISTENER_MAP)[K]
   : `on${Capitalize<string & K>}`;
 
-export type Listeners<E extends MadeElement> = {
-  [K in keyof E["listeners"] as ListenerKey<
+export type Listeners<L extends GeneralListenerMap> = {
+  [K in keyof L as ListenerKey<
     string & K
   >]: DOMAttributes<HTMLElement>[ListenerKey<
     string & K
@@ -33,3 +31,12 @@ export type Listeners<E extends MadeElement> = {
     ? ListenerKey<string & K>
     : never];
 };
+
+export function adaptListeners<L extends GeneralListenerMap>(listeners: L) {
+  return entries(listeners).reduce((acc, [key, value]) => {
+    return {
+      ...acc,
+      [getListenerName(key as any)]: value,
+    };
+  }, {} as Listeners<L>);
+}

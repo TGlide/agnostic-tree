@@ -18,9 +18,7 @@ export function keys<T extends Record<string, unknown>>(obj: T): (keyof T)[] {
  * @param {T} obj
  * @returns {[keyof T, T[keyof T]][]}
  */
-export function entries<T extends Record<string, unknown>>(
-  obj: T
-): [keyof T, T[keyof T]][] {
+export function entries<T extends {}>(obj: T): [keyof T, T[keyof T]][] {
   return Object.entries(obj) as [keyof T, T[keyof T]][];
 }
 
