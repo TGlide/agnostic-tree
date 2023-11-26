@@ -1,14 +1,13 @@
-import { entries, keys } from "@/helpers/object";
+import { entries } from "@/helpers/object";
 import type { MadeComponent } from "@/lib/makeComponent";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import type { ComponentCallback } from "../../makeComponent";
 import type { AtomValue, Expand } from "../../types";
 
-import { useStoreValues } from "./useStoreValues";
 import type { MadeElement } from "@/lib/makeElement";
-import { adaptListeners, type Listeners } from "./listeners";
-import type { ObjSnapshot } from "@/lib/helpers/getObjSnapshot";
 import { adaptAttributes } from "./attributes";
+import { adaptListeners, type Listeners } from "./listeners";
+import { useStoreValues } from "./useStoreValues";
 
 export type ReactElement<E extends MadeElement> = AtomValue<
   E["attributes"]

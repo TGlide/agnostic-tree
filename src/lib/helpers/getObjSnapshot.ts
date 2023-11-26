@@ -2,9 +2,13 @@ import type { Atom } from "nanostores";
 import { isAtom } from "./is";
 
 export type ObjSnapshot<T> = {
-  [K in keyof T]: T[K] extends Atom<infer U>
+  [K in keyof T]: T[K] extends Atom<infer U> // If Atom
     ? U
-    : T[K] extends object
+    : // If Function
+    T[K] extends Function
+    ? T[K]
+    : // If Object
+    T[K] extends object
     ? ObjSnapshot<T[K]>
     : T[K];
 };

@@ -57,6 +57,7 @@ export const createTree = makeComponent(() => {
         "data-id": rootId,
       } as const;
     },
+    listeners: {},
   });
 
   let isKeydown = false;
@@ -247,6 +248,7 @@ export const createTree = makeComponent(() => {
         hidden: !$expanded.includes(opts.id) ? true : undefined,
       });
     },
+    listeners: {},
   });
 
   function setFocusedItem(el: HTMLElement) {

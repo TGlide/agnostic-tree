@@ -9,11 +9,11 @@ type BaseAttributes =
 type MakeElementArgs<
   Deps extends Record<string, Atom>,
   Attributes extends BaseAttributes,
-  Listeners extends GeneralListenerMap
+  Listeners extends GeneralListenerMap | undefined = undefined
 > = {
   dependencies: Deps;
   getAttributes: (values: AtomValueMap<Deps>) => Attributes;
-  listeners?: Listeners;
+  listeners: Listeners extends undefined ? undefined : Listeners;
 };
 
 export function makeElement<
@@ -29,7 +29,7 @@ export function makeElement<
 
   return {
     attributes,
-    listeners: listeners as Listeners,
+    listeners: listeners,
   };
 }
 

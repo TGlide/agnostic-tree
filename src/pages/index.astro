@@ -3,6 +3,7 @@ import Preview from "@/components/Preview.astro";
 import { TreeReact } from "@/components/Tree.react";
 import { TreeSolid } from "@/components/Tree.solid";
 import TreeSvelte from "@/components/Tree.svelte";
+import TreeRunes from "@/components/Tree.runes.svelte";
 ---
 
 <html lang="en">
@@ -24,6 +25,9 @@ import TreeSvelte from "@/components/Tree.svelte";
     <div class="grid mbs-32">
       <Preview title="Svelte" icon="i-logos-svelte-icon">
         <TreeSvelte client:load />
+      </Preview>
+      <Preview title="Svelte Runes" icon="i-logos-svelte-icon">
+        <TreeRunes client:load />
       </Preview>
       <Preview title="Solid" icon="i-logos-solidjs-icon">
         <TreeSolid client:load />
