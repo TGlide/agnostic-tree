@@ -1,7 +1,6 @@
-import { keys } from "@/helpers/object";
-import { computed, type Atom } from "nanostores";
-import type { AtomValue, AtomValueMap, GeneralListenerMap } from "./types";
+import { type Atom } from "nanostores";
 import { computedObj } from "./helpers/computedObj";
+import type { AtomValueMap, GeneralListenerMap } from "./types";
 
 type BaseAttributes =
   | Record<string, unknown>

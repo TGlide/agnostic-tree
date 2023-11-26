@@ -1,12 +1,11 @@
 import { atom } from "nanostores";
-import { last } from "./helpers/array";
-import { computedObj } from "./helpers/computedObj";
-import { getElByDataAttr, isHidden } from "./helpers/dom";
-import { generateId, generateIds } from "./helpers/id";
-import { isHtmlElement, isLetter } from "./helpers/is";
-import { kbd } from "./helpers/keyboard";
-import { makeComponent, type MadeComponent } from "./makeComponent";
-import { makeElement } from "./makeElement";
+import { last } from "../helpers/array";
+import { computedObj } from "../helpers/computedObj";
+import { isHidden } from "../helpers/dom";
+import { isHtmlElement, isLetter } from "../helpers/is";
+import { kbd } from "../helpers/keyboard";
+import { makeComponent, type MadeComponent } from "../makeComponent";
+import { makeElement } from "../makeElement";
 
 const ATTRS = {
   TABINDEX: "tabindex",

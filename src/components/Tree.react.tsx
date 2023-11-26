@@ -1,9 +1,5 @@
-import {
-  adaptElement,
-  useComponent,
-  type ReactComponent,
-} from "@/lib/adapters/react";
-import { createTree, type Tree } from "@/lib/tree";
+import { useComponent, type ReactComponent } from "@/lib/adapters/react";
+import { createTree } from "@/lib/builders/tree";
 import { createContext, useContext } from "react";
 
 type Icon = "svelte" | "folder" | "js";
@@ -50,7 +46,7 @@ const TreeInner = ({ level = 1, treeItems }: TreeInnerProps) => {
 
   function getIcon(item: TreeItem, id: string) {
     if (item.children) {
-      return isExpanded.get()(id) ? icons.folderOpen : icons.folder;
+      return isExpanded(id) ? icons.folderOpen : icons.folder;
     }
 
     const fileExt = item.title.split(".").pop();
@@ -78,7 +74,7 @@ const TreeInner = ({ level = 1, treeItems }: TreeInnerProps) => {
 
               <span className="select-none">{title}</span>
 
-              {isSelected.get()(itemId) ? (
+              {isSelected(itemId) ? (
                 <div
                   className={`${icons["highlight"]} text-lg absolute right-0 translate-x-[calc(100%_+_0.25rem)]`}
                 />

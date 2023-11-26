@@ -13,7 +13,7 @@
 
   import type { TreeItem } from "./TreeInner.svelte";
   import TreeInner from "./TreeInner.svelte";
-  import { createTree, type Tree } from "@/lib/tree";
+  import { createTree, type Tree } from "@/lib/builders/tree";
   import { withComponent, type SvelteComponent } from "@/lib/adapters/svelte";
 
   const ctx = withComponent(createTree());
