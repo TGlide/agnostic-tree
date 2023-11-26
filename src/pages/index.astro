@@ -1,6 +1,7 @@
 ---
 import Preview from "@/components/Preview.astro";
 import { TreeReact } from "@/components/Tree.react";
+import { TreeSolid } from "@/components/Tree.solid";
 import TreeSvelte from "@/components/Tree.svelte";
 ---
 
@@ -26,6 +27,9 @@ import TreeSvelte from "@/components/Tree.svelte";
       </Preview>
       <Preview title="Svelte" icon="i-logos-svelte-icon">
         <TreeSvelte client:load />
+      </Preview>
+      <Preview title="Solid" icon="i-logos-solidjs-icon">
+        <TreeSolid client:load />
       </Preview>
     </div>
   </body>

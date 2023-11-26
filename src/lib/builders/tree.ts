@@ -68,7 +68,7 @@ export const createTree = makeComponent(() => {
           tabindex = $lastFocusedId === id ? 0 : -1;
         }
         return {
-          role: "treeitem",
+          role: "treeitem" as const,
           "aria-selected": $selectedId === id,
           "data-id": id,
           tabindex,
@@ -214,6 +214,7 @@ export const createTree = makeComponent(() => {
         }
       },
       click(e) {
+        console.log("click");
         const node = e.currentTarget;
         if (!isHtmlElement(node)) return;
 
@@ -237,7 +238,7 @@ export const createTree = makeComponent(() => {
     dependencies: { expanded },
     getAttributes: ({ $expanded }) => {
       return (opts: { id: string }) => ({
-        role: "group",
+        role: "group" as const,
         "data-group-id": opts.id,
         hidden: !$expanded.includes(opts.id) ? true : undefined,
       });

@@ -1,3 +1,5 @@
+/** @jsxImportSource react */
+
 import { useComponent, type ReactComponent } from "@/lib/adapters/react";
 import { createTree } from "@/lib/builders/tree";
 import { createContext, useContext } from "react";
