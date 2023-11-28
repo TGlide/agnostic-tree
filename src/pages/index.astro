@@ -5,6 +5,7 @@ import { TreeSolid } from "@/components/Tree.solid";
 import TreeSvelte from "@/components/Tree.svelte";
 import TreeRunes from "@/components/Tree.runes.svelte";
 import TreeVanilla from "@/components/Tree.astro";
+import Controls from "@/components/Controls.astro";
 ---
 
 <html lang="en">
@@ -23,6 +24,7 @@ import TreeVanilla from "@/components/Tree.astro";
         popular frameworks
       </h2>
     </hgroup>
+
     <div class="grid mbs-32">
       <Preview title="Vanilla" icon="i-mdi-language-javascript color-yellow-4">
         <TreeVanilla />
@@ -39,6 +41,7 @@ import TreeVanilla from "@/components/Tree.astro";
       <Preview title="React" icon="i-logos-react">
         <TreeReact client:load />
       </Preview>
+      <Controls />
     </div>
   </body>
 </html>
