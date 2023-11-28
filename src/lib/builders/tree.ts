@@ -2,11 +2,11 @@ import { atom } from "nanostores";
 import { last } from "../helpers/array";
 import { computedObj } from "../helpers/computedObj";
 import { isHidden } from "../helpers/dom";
+import { generateId } from "../helpers/id";
 import { isHtmlElement, isLetter } from "../helpers/is";
 import { kbd } from "../helpers/keyboard";
 import { makeComponent, type MadeComponent } from "../makeComponent";
 import { makeElement } from "../makeElement";
-import { generateId } from "../helpers/id";
 
 const ATTRS = {
   TABINDEX: "tabindex",
@@ -47,7 +47,6 @@ export const createTree = makeComponent(() => {
   });
 
   const rootId = generateId();
-  console.log({ rootId });
 
   const rootTree = makeElement({
     dependencies: {},
@@ -310,9 +309,7 @@ export const createTree = makeComponent(() => {
   }
 
   function expandAll() {
-    console.log("expand all");
     const rootEl = document.querySelector(`[data-id="${rootId}"]`);
-    console.log(rootEl, rootId);
     if (!isHtmlElement(rootEl)) return;
 
     const items = rootEl.querySelectorAll('[role="treeitem"]');

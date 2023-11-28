@@ -1,6 +1,5 @@
 import { getObjSnapshot, type ObjSnapshot } from "@/lib/helpers/getObjSnapshot";
 import { subscribeToObj } from "@/lib/helpers/subscribeToObj";
-import { useEffect, useState } from "react";
 import { createSignal, onCleanup, type Accessor } from "solid-js";
 
 /**

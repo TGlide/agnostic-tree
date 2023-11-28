@@ -3,6 +3,7 @@
 import { data, getIcon, type FileTree, icons, isDirectory } from "@/data";
 import { useComponent, type SolidComponent } from "@/lib/adapters/solid";
 import { createTree } from "@/lib/builders/tree";
+import { isJsEnabled } from "@/lib/helpers/browser";
 import { For, createContext, mergeProps, useContext } from "solid-js";
 
 type TreeComponent = SolidComponent<typeof createTree>;
@@ -80,10 +81,12 @@ const TreeInner = (p: TreeInnerProps) => {
 };
 
 export const TreeSolid = () => {
-  console.log("TreeSolid");
   const cmp = useComponent(createTree);
 
   const { expandAll, collapseAll } = cmp().helpers;
+
+  console.log(isJsEnabled(), cmp().elements.tree);
+
   return (
     <Context.Provider value={cmp}>
       <div class="flex items-center gap-8">
