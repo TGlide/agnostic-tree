@@ -1,0 +1,40 @@
+---
+import { data } from "@/data";
+import TreeInner from "./TreeInner.astro";
+---
+
+<div class="flex items-center gap-8">
+  <button
+    class="font-mono text-xs text-gray-8 hover:text-gray-4"
+    id="expand-all"
+  >
+    Expand all
+  </button>
+  <div class="w-px h-16 bg-gray-8" aria-hidden="true"></div>
+  <button
+    class="font-mono text-xs text-gray-8 hover:text-gray-4"
+    id="collapse-all"
+  >
+    Collapse all
+  </button>
+</div>
+
+<ul class="mbs-8" data-v-tree>
+  <TreeInner treeItems={data} />
+</ul>
+
+<script>
+  import { withComponent } from "@/lib/adapters/vanilla";
+  import { createTree } from "@/lib/builders/tree";
+
+  const ctx = withComponent(createTree);
+
+  const {
+    helpers: { expandAll, collapseAll },
+  } = ctx;
+
+  document.getElementById("expand-all")?.addEventListener("click", expandAll);
+  document
+    .getElementById("collapse-all")
+    ?.addEventListener("click", collapseAll);
+</script>

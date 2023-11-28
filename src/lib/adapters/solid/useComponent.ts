@@ -9,6 +9,7 @@ import { adaptAttributes } from "./attributes";
 import { adaptListeners, type Listeners } from "./listeners";
 import { useStoreValues } from "./useStoreValues";
 import { createUniqueId, type Accessor } from "solid-js";
+import { isFunction } from "@/lib/helpers/is";
 
 export type SolidElement<E extends MadeElement> = AtomValue<
   E["attributes"]
@@ -36,7 +37,7 @@ export function useComponentElements<C extends MadeComponent>(
         ? adaptListeners(element.listeners)
         : {};
 
-      if (typeof element.attributes === "function") {
+      if (isFunction(element.attributes)) {
         return {
           ...acc,
           [key]: (...args: any[]) => {

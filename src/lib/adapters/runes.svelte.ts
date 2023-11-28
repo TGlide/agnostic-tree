@@ -5,6 +5,7 @@ import type { ComponentCallback, MadeComponent } from "../makeComponent";
 import type { MadeElement } from "../makeElement";
 import type { AtomValue, Expand, GeneralListenerMap } from "../types";
 import { generateId } from "../helpers/id";
+import { isFunction } from "../helpers/is";
 
 type Listeners<L extends GeneralListenerMap> = {
   [K in keyof L as `on${K & string}`]: L[K];
@@ -30,7 +31,7 @@ const getComponentSnapshot = <C extends MadeComponent>(component: C) => {
   const elements = {} as any;
 
   for (const [key, el] of entries(snapshot.elements as any)) {
-    if (typeof el.attributes === "function") {
+    if (isFunction(el.attributes)) {
       elements[key] = (...args: any[]) => {
         const attributes = el.attributes(...args);
         return {
@@ -55,7 +56,9 @@ const getComponentSnapshot = <C extends MadeComponent>(component: C) => {
 };
 
 export function withRunes<Cb extends ComponentCallback>(callback: Cb) {
-  const component = callback({ generatedId: generateId() });
+  const component = callback({
+    generatedId: generateId(),
+  }) as MadeComponent<Cb>;
   type C = typeof component;
 
   let res = $state<any>(getComponentSnapshot(component));

@@ -1,0 +1,70 @@
+---
+import { getIcon, type FileTree, isDirectory, icons } from "@/data";
+
+interface Props {
+  treeItems: FileTree;
+  level?: number;
+}
+
+const { treeItems, level = 1 } = Astro.props;
+---
+
+{
+  treeItems.map((treeItem, i) => {
+    const name = treeItem.name;
+    const itemId = `${name}-${i}`;
+    const hasChildren = treeItem.kind === "directory" && !!treeItem.children;
+
+    return (
+      <li class={level !== 1 ? "mis-12 pis-12 border-l bc-gray-10" : ""}>
+        <button
+          class="flex items-center gap-4 rounded-md p-4 relative focus:bg-gray-10"
+          data-v-item={JSON.stringify({
+            id: itemId,
+            hasChildren,
+          })}
+        >
+          <div
+            class={`${getIcon({
+              item: treeItem,
+              isExpanded: true,
+            })} text-lg hidden expanded`}
+          />
+
+          <div
+            class={`${getIcon({
+              item: treeItem,
+              isExpanded: false,
+            })} text-lg hidden collapsed`}
+          />
+
+          <span class="select-none">{name}</span>
+
+          <div
+            class={`${icons.highlight} text-lg absolute right-0 translate-x-[calc(100%_+_0.25rem)] hidden highlight`}
+          />
+        </button>
+
+        {isDirectory(treeItem) && hasChildren ? (
+          <ul data-v-group={JSON.stringify({ id: itemId })}>
+            <Astro.self treeItems={treeItem.children} level={level + 1} />
+          </ul>
+        ) : null}
+      </li>
+    );
+  })
+}
+
+<style>
+  [data-selected] .highlight {
+    display: block;
+  }
+
+  :not([data-expanded]) > .collapsed {
+    display: block;
+  }
+
+  [data-expanded] > .expanded {
+    display: block;
+  }
+</style>

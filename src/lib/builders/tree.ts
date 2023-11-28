@@ -72,9 +72,12 @@ export const createTree = makeComponent(({ generatedId }) => {
         return {
           role: "treeitem" as const,
           "aria-selected": $selectedId === id,
+          "data-selected": $selectedId === id ? true : undefined,
           "data-id": id,
           tabindex,
           "aria-expanded": hasChildren ? $expanded.includes(id) : undefined,
+          "data-expanded":
+            hasChildren && $expanded.includes(id) ? true : undefined,
         };
       };
     },

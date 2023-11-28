@@ -4,6 +4,7 @@ import { TreeReact } from "@/components/Tree.react";
 import { TreeSolid } from "@/components/Tree.solid";
 import TreeSvelte from "@/components/Tree.svelte";
 import TreeRunes from "@/components/Tree.runes.svelte";
+import TreeVanilla from "@/components/Tree.astro";
 ---
 
 <html lang="en">
@@ -23,6 +24,9 @@ import TreeRunes from "@/components/Tree.runes.svelte";
       </h2>
     </hgroup>
     <div class="grid mbs-32">
+      <Preview title="Vanilla" icon="i-mdi-language-javascript color-yellow-4">
+        <TreeVanilla />
+      </Preview>
       <Preview title="Svelte" icon="i-logos-svelte-icon">
         <TreeSvelte client:load />
       </Preview>

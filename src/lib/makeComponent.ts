@@ -6,9 +6,9 @@ type Toolbox = {
 };
 
 export type ComponentCallback<
-  Elements extends Record<string, MadeElement> = any,
-  States extends Record<string, ReadableAtom> = any,
-  Helpers extends Record<string, any> = any
+  Elements extends Record<string, MadeElement> = Record<string, MadeElement>,
+  States extends Record<string, ReadableAtom> = Record<string, ReadableAtom>,
+  Helpers extends Record<string, any> = Record<string, any>
 > = (args: Toolbox) => {
   elements: Elements;
   states?: States;

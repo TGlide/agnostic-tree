@@ -9,3 +9,7 @@ export const isHtmlElement = (element: unknown): element is HTMLElement => {
 export function isAtom(value: unknown): value is Atom {
   return typeof value === "object" && value !== null && "subscribe" in value;
 }
+
+export function isFunction(value: unknown): value is Function {
+  return typeof value === "function";
+}
