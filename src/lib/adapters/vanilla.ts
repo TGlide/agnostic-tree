@@ -1,4 +1,4 @@
-import { entries, omit } from "@/helpers/object";
+import { entries, omit } from "@/lib/helpers/object";
 import { generateId } from "../helpers/id";
 import type { ComponentCallback, MadeComponent } from "../makeComponent";
 import type { Expand } from "../types";

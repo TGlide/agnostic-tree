@@ -1,4 +1,4 @@
-import { entries, omit } from "@/helpers/object";
+import { entries, omit } from "@/lib/helpers/object";
 import { getObjSnapshot, type ObjSnapshot } from "../helpers/getObjSnapshot";
 import { subscribeToObj } from "../helpers/subscribeToObj";
 import type { ComponentCallback, MadeComponent } from "../makeComponent";

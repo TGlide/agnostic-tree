@@ -1,4 +1,4 @@
-import { entries } from "@/helpers/object";
+import { entries } from "@/lib/helpers/object";
 import { toCamelCase } from "@/lib/helpers/toCamelCase";
 import type { GeneralListenerMap } from "@/lib/types";
 import type { DOMAttributes } from "react";

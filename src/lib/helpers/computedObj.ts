@@ -1,6 +1,6 @@
 import { computed, type Atom } from "nanostores";
 import type { AtomValueMap } from "../types";
-import { keys } from "@/helpers/object";
+import { keys } from "@/lib/helpers/object";
 
 export function computedObj<Deps extends Record<string, Atom>, Return>(
   deps: Deps,

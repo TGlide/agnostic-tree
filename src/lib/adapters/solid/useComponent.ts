@@ -1,4 +1,4 @@
-import { entries } from "@/helpers/object";
+import { entries } from "@/lib/helpers/object";
 import type { MadeComponent } from "@/lib/makeComponent";
 
 import type { ComponentCallback } from "../../makeComponent";

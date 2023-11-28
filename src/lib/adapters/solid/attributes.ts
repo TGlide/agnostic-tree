@@ -1,4 +1,4 @@
-import { entries } from "@/helpers/object";
+import { entries } from "@/lib/helpers/object";
 import type { DOMAttributes, HTMLAttributes } from "react";
 
 const ATTRIBUTE_MAP = {
