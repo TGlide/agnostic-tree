@@ -19,7 +19,7 @@ import TreeInner from "./TreeInner.astro";
   </button>
 </div>
 
-<ul class="mbs-8" data-v-tree>
+<ul class="mbs-8" data-v-tree data-js-disabled>
   <TreeInner treeItems={data} />
 </ul>
 
@@ -37,4 +37,15 @@ import TreeInner from "./TreeInner.astro";
   document
     .getElementById("collapse-all")
     ?.addEventListener("click", collapseAll);
+
+  document
+    .querySelector("[data-js-disabled]")
+    ?.removeAttribute("data-js-disabled");
 </script>
+
+<style is:global>
+  /* Prevent FUOC */
+  [data-js-disabled] [data-level]:not([data-level="1"]) {
+    display: none;
+  }
+</style>

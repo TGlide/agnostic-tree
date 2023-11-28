@@ -16,7 +16,10 @@ const { treeItems, level = 1 } = Astro.props;
     const hasChildren = treeItem.kind === "directory" && !!treeItem.children;
 
     return (
-      <li class={level !== 1 ? "mis-12 pis-12 border-l bc-gray-10" : ""}>
+      <li
+        class={level !== 1 ? "mis-12 pis-12 border-l bc-gray-10" : ""}
+        data-level={level}
+      >
         <button
           class="flex items-center gap-4 rounded-md p-4 relative focus:bg-gray-10"
           data-v-item={JSON.stringify({
