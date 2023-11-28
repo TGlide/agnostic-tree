@@ -1,7 +1,8 @@
 import { entries, omit } from "@/helpers/object";
-import type { MadeComponent } from "../makeComponent";
+import type { ComponentCallback, MadeComponent } from "../makeComponent";
 import type { MadeElement } from "../makeElement";
 import type { Expand, GeneralEventListener } from "../types";
+import { generateId } from "../helpers/id";
 
 type BaseAction = (node: HTMLElement) => {
   destroy(): void;
@@ -35,7 +36,12 @@ export function adaptElement<E extends MadeElement>(element: E) {
   return actionFn;
 }
 
-export function withComponent<C extends MadeComponent>(component: C) {
+export function withComponent<Cb extends ComponentCallback>(callback: Cb) {
+  const component = callback({
+    generatedId: generateId(),
+  }) as MadeComponent<Cb>;
+  type C = typeof component;
+
   const elements = Object.fromEntries(
     entries(component.elements).map(([key, value]) => {
       return [key, adaptElement(value)];
@@ -50,6 +56,6 @@ export function withComponent<C extends MadeComponent>(component: C) {
   };
 }
 
-export type SvelteComponent<C extends MadeComponent> = Expand<
-  ReturnType<typeof withComponent<C>>
+export type SvelteComponent<Cb extends ComponentCallback> = Expand<
+  ReturnType<typeof withComponent<Cb>>
 >;

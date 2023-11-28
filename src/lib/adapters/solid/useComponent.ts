@@ -8,7 +8,7 @@ import type { MadeElement } from "@/lib/makeElement";
 import { adaptAttributes } from "./attributes";
 import { adaptListeners, type Listeners } from "./listeners";
 import { useStoreValues } from "./useStoreValues";
-import type { Accessor } from "solid-js";
+import { createUniqueId, type Accessor } from "solid-js";
 
 export type SolidElement<E extends MadeElement> = AtomValue<
   E["attributes"]
@@ -60,7 +60,9 @@ export function useComponentElements<C extends MadeComponent>(
 }
 
 export function useComponent<Cb extends ComponentCallback>(componentCb: Cb) {
-  const component = componentCb() as ReturnType<Cb>;
+  const id = createUniqueId();
+
+  const component = componentCb({ generatedId: id }) as ReturnType<Cb>;
   const elements = useComponentElements(component);
   const values = useStoreValues(component);
 

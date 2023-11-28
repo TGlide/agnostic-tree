@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  export type TreeComponent = RunesComponent<Tree>;
+  export type TreeComponent = RunesComponent<CreateTree>;
 
   const setCtx = (ctx: TreeComponent) => {
     setContext("tree", ctx);
@@ -13,10 +13,10 @@
 
   import { data } from "@/data";
   import { withRunes, type RunesComponent } from "@/lib/adapters/runes.svelte";
-  import { createTree, type Tree } from "@/lib/builders/tree";
+  import { createTree, type CreateTree, type Tree } from "@/lib/builders/tree";
   import TreeInner from "./TreeInner.runes.svelte";
 
-  const tree = withRunes(createTree());
+  const tree = withRunes(createTree);
   setCtx(tree);
 </script>
 

@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  export type TreeComponent = SvelteComponent<Tree>;
+  export type TreeComponent = SvelteComponent<CreateTree>;
 
   const setCtx = (ctx: TreeComponent) => {
     setContext("tree", ctx);
@@ -13,10 +13,10 @@
 
   import { data } from "@/data";
   import { withComponent, type SvelteComponent } from "@/lib/adapters/svelte";
-  import { createTree, type Tree } from "@/lib/builders/tree";
+  import { createTree, type CreateTree, type Tree } from "@/lib/builders/tree";
   import TreeInner from "./TreeInner.svelte";
 
-  const ctx = withComponent(createTree());
+  const ctx = withComponent(createTree);
   setCtx(ctx);
 
   const {

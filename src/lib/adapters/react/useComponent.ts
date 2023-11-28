@@ -1,6 +1,6 @@
 import { entries } from "@/helpers/object";
 import type { MadeComponent } from "@/lib/makeComponent";
-import { useMemo } from "react";
+import { useId, useMemo } from "react";
 import type { ComponentCallback } from "../../makeComponent";
 import type { AtomValue, Expand } from "../../types";
 
@@ -58,7 +58,12 @@ export function useComponentElements<C extends MadeComponent>(
 }
 
 export function useComponent<Cb extends ComponentCallback>(componentCb: Cb) {
-  const component = useMemo(() => componentCb(), []) as ReturnType<Cb>;
+  const id = useId();
+
+  const component = useMemo(
+    () => componentCb({ generatedId: id }),
+    []
+  ) as ReturnType<Cb>;
   const elements = useComponentElements(component);
 
   const values = useStoreValues(component);

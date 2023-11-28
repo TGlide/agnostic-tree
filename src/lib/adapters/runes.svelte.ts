@@ -1,9 +1,10 @@
 import { entries, omit } from "@/helpers/object";
 import { getObjSnapshot, type ObjSnapshot } from "../helpers/getObjSnapshot";
 import { subscribeToObj } from "../helpers/subscribeToObj";
-import type { MadeComponent } from "../makeComponent";
+import type { ComponentCallback, MadeComponent } from "../makeComponent";
 import type { MadeElement } from "../makeElement";
 import type { AtomValue, Expand, GeneralListenerMap } from "../types";
+import { generateId } from "../helpers/id";
 
 type Listeners<L extends GeneralListenerMap> = {
   [K in keyof L as `on${K & string}`]: L[K];
@@ -53,7 +54,10 @@ const getComponentSnapshot = <C extends MadeComponent>(component: C) => {
   };
 };
 
-export function withRunes<C extends MadeComponent>(component: C) {
+export function withRunes<Cb extends ComponentCallback>(callback: Cb) {
+  const component = callback({ generatedId: generateId() });
+  type C = typeof component;
+
   let res = $state<any>(getComponentSnapshot(component));
 
   $effect(() => {
@@ -75,6 +79,6 @@ export function withRunes<C extends MadeComponent>(component: C) {
   };
 }
 
-export type RunesComponent<C extends MadeComponent> = Expand<
-  ReturnType<typeof withRunes<C>>
+export type RunesComponent<Cb extends ComponentCallback> = Expand<
+  ReturnType<typeof withRunes<Cb>>
 >;

@@ -85,8 +85,6 @@ export const TreeSolid = () => {
 
   const { expandAll, collapseAll } = cmp().helpers;
 
-  console.log(isJsEnabled(), cmp().elements.tree);
-
   return (
     <Context.Provider value={cmp}>
       <div class="flex items-center gap-8">

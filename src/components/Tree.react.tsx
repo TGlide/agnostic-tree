@@ -2,10 +2,10 @@
 
 import { data, getIcon, type FileTree, isDirectory, icons } from "@/data";
 import { useComponent, type ReactComponent } from "@/lib/adapters/react";
-import { createTree } from "@/lib/builders/tree";
+import { createTree, type CreateTree } from "@/lib/builders/tree";
 import { createContext, useContext } from "react";
 
-type TreeComponent = ReactComponent<typeof createTree>;
+type TreeComponent = ReactComponent<CreateTree>;
 
 const Context = createContext<TreeComponent | null>(null);
 

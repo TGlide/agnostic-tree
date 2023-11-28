@@ -2,7 +2,6 @@ import { atom } from "nanostores";
 import { last } from "../helpers/array";
 import { computedObj } from "../helpers/computedObj";
 import { isHidden } from "../helpers/dom";
-import { generateId } from "../helpers/id";
 import { isHtmlElement, isLetter } from "../helpers/is";
 import { kbd } from "../helpers/keyboard";
 import { makeComponent, type MadeComponent } from "../makeComponent";
@@ -15,7 +14,7 @@ const ATTRS = {
   DATAID: "data-id",
 } as const;
 
-export const createTree = makeComponent(() => {
+export const createTree = makeComponent(({ generatedId }) => {
   /**
    * Track currently focused item in the tree.
    */
@@ -46,15 +45,13 @@ export const createTree = makeComponent(() => {
     return (itemId: string) => $expanded.includes(itemId);
   });
 
-  const rootId = generateId();
-
   const rootTree = makeElement({
     dependencies: {},
     getAttributes() {
       return {
         role: "tree",
         "data-tree-root": "",
-        "data-id": rootId,
+        "data-id": generatedId,
       } as const;
     },
     listeners: {},
@@ -309,7 +306,7 @@ export const createTree = makeComponent(() => {
   }
 
   function expandAll() {
-    const rootEl = document.querySelector(`[data-id="${rootId}"]`);
+    const rootEl = document.querySelector(`[data-id="${generatedId}"]`);
     if (!isHtmlElement(rootEl)) return;
 
     const items = rootEl.querySelectorAll('[role="treeitem"]');
@@ -347,4 +344,5 @@ export const createTree = makeComponent(() => {
   };
 });
 
-export type Tree = MadeComponent<typeof createTree>;
+export type CreateTree = typeof createTree;
+export type Tree = MadeComponent<CreateTree>;
