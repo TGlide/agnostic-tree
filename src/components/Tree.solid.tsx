@@ -1,24 +1,9 @@
 /** @jsxImportSource solid-js */
 
+import { data, getIcon, type FileTree, icons, isDirectory } from "@/data";
 import { useComponent, type SolidComponent } from "@/lib/adapters/solid";
 import { createTree } from "@/lib/builders/tree";
 import { For, createContext, mergeProps, useContext } from "solid-js";
-
-type Icon = "svelte" | "folder" | "js";
-
-type TreeItem = {
-  title: string;
-  children?: TreeItem[];
-};
-
-const icons = {
-  svelte: "i-logos-svelte-icon",
-  folder: "i-solar-folder-2-bold-duotone",
-  folderOpen: "i-solar-folder-open-bold-duotone",
-  js: "i-logos-javascript",
-  highlight: "i-solar-arrow-left-bold",
-  unknown: "i-solar-question-circle-bold",
-};
 
 type TreeComponent = SolidComponent<typeof createTree>;
 
@@ -35,7 +20,7 @@ const useTreeContext = () => {
 };
 
 type TreeInnerProps = {
-  treeItems: TreeItem[];
+  treeItems: FileTree;
   level?: number;
 };
 
@@ -43,43 +28,47 @@ const TreeInner = (p: TreeInnerProps) => {
   const props = mergeProps({ level: 1 }, p);
   const tree = useTreeContext();
 
-  function getIcon(item: TreeItem, id: string) {
-    if (item.children) {
-      return tree().helpers.isExpanded(id) ? icons.folderOpen : icons.folder;
-    }
-
-    const fileExt = item.title.split(".").pop();
-    return icons[fileExt as Icon] ?? icons.unknown;
-  }
-
   return (
     <>
       <For each={props.treeItems}>
         {(treeItem, i) => {
-          const { title, children } = treeItem;
-          const itemId = `${title}-${i()}`;
-          const hasChildren = !!children?.length;
+          const { name } = treeItem;
+          const itemId = `${name}-${i()}`;
+          const hasChildren =
+            treeItem.kind === "directory" && !!treeItem.children;
 
           return (
-            <li class={props.level !== 1 ? "pl-4" : ""}>
+            <li
+              class={
+                props.level !== 1 ? "mis-12 pis-12 border-l bc-gray-10" : ""
+              }
+            >
               <button
-                class="flex items-center gap-4 rounded-md p-4 relative focus:bg-neutral-700 focus:ring focus:ring-neutral-100 focus:outline-none"
+                class="flex items-center gap-4 rounded-md p-4 relative focus:bg-gray-10"
                 {...tree().elements.item({
                   id: itemId,
                   hasChildren,
                 })}
               >
-                <div class={`${getIcon(treeItem, itemId)} text-lg`} />
-                <span class="select-none">{title}</span>
+                <div
+                  class={`${getIcon({
+                    item: treeItem,
+                    isExpanded: tree().helpers.isExpanded(itemId),
+                  })} text-lg`}
+                />
+                <span class="select-none">{name}</span>
                 {tree().helpers.isSelected(itemId) ? (
                   <div
                     class={`${icons["highlight"]} text-lg absolute right-0 translate-x-[calc(100%_+_0.25rem)]`}
                   />
                 ) : null}
               </button>
-              {children ? (
+              {isDirectory(treeItem) && hasChildren ? (
                 <ul {...tree().elements.group({ id: itemId })}>
-                  <TreeInner treeItems={children} level={props.level + 1} />
+                  <TreeInner
+                    treeItems={treeItem.children}
+                    level={props.level + 1}
+                  />
                 </ul>
               ) : null}
             </li>
@@ -91,58 +80,31 @@ const TreeInner = (p: TreeInnerProps) => {
 };
 
 export const TreeSolid = () => {
+  console.log("TreeSolid");
   const cmp = useComponent(createTree);
 
-  const treeItems: TreeItem[] = [
-    { title: "index.js" },
-    {
-      title: "lib",
-      children: [
-        {
-          title: "tree",
-          children: [
-            {
-              title: "Tree.svelte",
-            },
-            {
-              title: "TreeView.svelte",
-            },
-          ],
-        },
-        {
-          title: "icons",
-          children: [{ title: "JS.svelte" }, { title: "Svelte.svelte" }],
-        },
-        {
-          title: "index.js",
-        },
-      ],
-    },
-    {
-      title: "routes",
-      children: [
-        {
-          title: "contents",
-          children: [
-            {
-              title: "+layout.svelte",
-            },
-            {
-              title: "+page.svelte",
-            },
-          ],
-        },
-      ],
-    },
-  ];
-
+  const { expandAll, collapseAll } = cmp().helpers;
   return (
     <Context.Provider value={cmp}>
-      <div class="grid w-full h-full place-items-center overflow-y-auto">
-        <ul class="py-4 px-16" {...cmp().elements.tree}>
-          <TreeInner treeItems={treeItems} />
-        </ul>
+      <div class="flex items-center gap-8">
+        <button
+          class="font-mono text-xs text-gray-8 hover:text-gray-4"
+          onClick={expandAll}
+        >
+          Expand all
+        </button>
+        <div class="w-px h-16 bg-gray-8" aria-hidden="true" />
+        <button
+          class="font-mono text-xs text-gray-8 hover:text-gray-4"
+          onClick={collapseAll}
+        >
+          Collapse all
+        </button>
       </div>
+
+      <ul class="mbs-8" {...cmp().elements.tree}>
+        <TreeInner treeItems={data} />
+      </ul>
     </Context.Provider>
   );
 };

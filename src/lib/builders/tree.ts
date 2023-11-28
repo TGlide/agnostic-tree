@@ -47,6 +47,7 @@ export const createTree = makeComponent(() => {
   });
 
   const rootId = generateId();
+  console.log({ rootId });
 
   const rootTree = makeElement({
     dependencies: {},
@@ -309,7 +310,9 @@ export const createTree = makeComponent(() => {
   }
 
   function expandAll() {
+    console.log("expand all");
     const rootEl = document.querySelector(`[data-id="${rootId}"]`);
+    console.log(rootEl, rootId);
     if (!isHtmlElement(rootEl)) return;
 
     const items = rootEl.querySelectorAll('[role="treeitem"]');
