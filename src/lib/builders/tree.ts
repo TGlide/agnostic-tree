@@ -219,7 +219,6 @@ export const createTree = makeComponent(() => {
         }
       },
       click(e) {
-        console.log("click");
         const node = e.currentTarget;
         if (!isHtmlElement(node)) return;
 

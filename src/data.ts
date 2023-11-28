@@ -19,7 +19,7 @@ export function isDirectory(item: File | Directory): item is Directory {
   return item.kind === "directory";
 }
 
-export type FileTree = Array<File | Directory>;
+export type FileTree = Readonly<Array<File | Directory>>;
 
 export const data: FileTree = [
   {

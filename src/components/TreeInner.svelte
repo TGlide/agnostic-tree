@@ -16,7 +16,7 @@
   {@const itemId = `${name}-${i}`}
   {@const hasChildren = treeItem.kind === "directory" && !!treeItem.children}
 
-  <li class={level !== 1 ? "mis-12 pis-12 border-l bc-gray-11" : ""}>
+  <li class={level !== 1 ? "mis-12 pis-12 border-l bc-gray-10" : ""}>
     <button
       class="flex items-center gap-4 rounded-md p-4 relative focus:bg-gray-10"
       {...$item({
